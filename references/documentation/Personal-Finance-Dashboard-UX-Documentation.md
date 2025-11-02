@@ -152,7 +152,7 @@
 
 ### Flow #1: Sign Up → Demo → Real Data
 
-```
+\`\`\`
 [Landing Page]
       ↓
 [Sign Up] ← Legal consent (Terms/Privacy)
@@ -172,11 +172,11 @@
 [Setup Wizard] → Currency, Budget, Preferences
       ↓
 [Dashboard Ready]
-```
+\`\`\`
 
 ### Flow #2: Add Transaction
 
-```
+\`\`\`
 [Dashboard]
       ↓
 [Click "+" FAB]
@@ -196,11 +196,11 @@
 [Success Feedback]
       ↓
 [Dashboard Updates] ← New transaction visible
-```
+\`\`\`
 
 ### Flow #3: Budget Check & Adjustment
 
-```
+\`\`\`
 [Dashboard]
       ↓
 [See "Over Budget" Warning] ← Red indicator
@@ -222,7 +222,7 @@
 [Confirmation]
       ↓
 [Updated Dashboard] ← Indicator changes to green
-```
+\`\`\`
 
 ---
 
