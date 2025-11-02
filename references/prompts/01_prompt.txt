@@ -32,14 +32,14 @@ DESIGN NOTES:
 - Ensure proper visual hierarchy
 
 Make this production-ready with clean, well-organized code.
-```
+\`\`\`
 
 ---
 
 ## Alternative: More Specific Prompt
 
 If v0 needs more guidance, use this more detailed version:
-```
+\`\`\`
 Build a personal finance dashboard web app matching the attached Figma design.
 
 TECH STACK:
@@ -98,7 +98,7 @@ DESIGN REQUIREMENTS:
 
 OUTPUT:
 Provide a single-file React component that I can immediately use and customize.
-```
+\`\`\`
 
 ---
 
@@ -110,7 +110,7 @@ Provide a single-file React component that I can immediately use and customize.
 - v0 works better when it can see the image while reading instructions
 
 **2. If You Have Multiple Screenshots:**
-```
+\`\`\`
 I've attached 3 screenshots showing different states of the dashboard:
 1. Desktop view (main dashboard)
 2. Mobile view (responsive layout)  

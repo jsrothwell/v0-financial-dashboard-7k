@@ -33,23 +33,23 @@ Use React Router's useNavigate() hook to handle navigation:
 - onClick: navigate('/dashboard') or navigate(-1) to go back
 
 Make sure the navigation is consistent across all pages (Dashboard, Settings, Terms, Privacy, etc.)
-```
+\`\`\`
 
 ---
 
 ## Alternative: Simple One-Liner Prompt
 
 If v0 just needs a quick fix:
-```
+\`\`\`
 Add a "← Back to Dashboard" button at the top left of the Settings page that navigates back to the main dashboard when clicked.
-```
+\`\`\`
 
 ---
 
 ## More Comprehensive Navigation Prompt
 
 If you want to improve navigation throughout the app:
-```
+\`\`\`
 Improve navigation across the entire app:
 
 1. PERSISTENT HEADER (all pages):
