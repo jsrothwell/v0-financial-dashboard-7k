@@ -1,7 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"  // Add useEffect here
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useSettings } from "@/lib/use-settings"
 import { DEMO_TRANSACTIONS, DEMO_BUDGETS } from "@/lib/demo-data"
 import { Button } from "@/components/ui/button"
@@ -52,7 +51,7 @@ export function FinancialDashboard() {
     if (settings.useDemoData) {
       setTransactions(DEMO_TRANSACTIONS)
     } else {
-      const saved = localStorage.getItem('userTransactions')
+      const saved = localStorage.getItem("userTransactions")
       setTransactions(saved ? JSON.parse(saved) : [])
     }
   }, [settings.useDemoData])
