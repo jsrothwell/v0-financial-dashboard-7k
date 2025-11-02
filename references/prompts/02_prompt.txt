@@ -127,7 +127,7 @@ When demo mode is active, show a dismissible banner at top of dashboard:
 "🎭 Demo Mode Active - Viewing sample data. Go to Settings to use your real data."
 
 Make all forms accessible with proper labels, validation, and error handling. Use shadcn/ui components for consistency.
-```
+\`\`\`
 
 ---
 
@@ -136,7 +136,7 @@ Make all forms accessible with proper labels, validation, and error handling. Us
 If v0 struggles with the large prompt, break it into smaller pieces:
 
 ### Prompt 1: Authentication
-```
+\`\`\`
 Add authentication to the dashboard:
 
 1. Create Login page with:
@@ -159,10 +159,10 @@ Add authentication to the dashboard:
    - User dropdown menu in header with "Settings" and "Logout"
 
 Use shadcn/ui Form components and validation.
-```
+\`\`\`
 
 ### Prompt 2: Cookie Consent & Legal Pages
-```
+\`\`\`
 Add GDPR-compliant cookie consent and legal pages:
 
 1. Cookie Consent Banner:
@@ -189,10 +189,10 @@ Add GDPR-compliant cookie consent and legal pages:
 4. Add footer to dashboard with links to Terms, Privacy, Contact
 
 Use professional legal boilerplate text. Make pages readable with proper spacing and typography.
-```
+\`\`\`
 
 ### Prompt 3: Settings & Demo Mode
-```
+\`\`\`
 Create a Settings page with demo data toggle:
 
 SETTINGS PAGE LAYOUT:
@@ -236,7 +236,7 @@ DEMO DATA SHOULD INCLUDE:
 - Last 3 months of data
 
 Make settings intuitive with immediate saves or clear "Save" buttons. Use shadcn/ui components.
-```
+\`\`\`
 
 ---
 
@@ -250,20 +250,20 @@ Make settings intuitive with immediate saves or clear "Save" buttons. Use shadcn
 
 **For Demo Data:**
 After v0 generates the settings page, you can refine with:
-```
+\`\`\`
 "Make the demo data more realistic with 100 transactions spanning 6 months"
 "Add a visual indicator badge next to the logo when in demo mode"
 "Create an onboarding flow for new users that suggests enabling demo mode first"
-```
+\`\`\`
 
 **For Cookie Consent:**
-```
+\`\`\`
 "Make the cookie banner slide up from bottom with animation"
 "Add a 'Customize' modal that lets users choose cookie categories"
 "Ensure banner is accessible (keyboard navigation, screen readers)"
-```
+\`\`\`
 
 **Testing Prompt:**
-```
+\`\`\`
 "Add a testing mode where I can quickly switch between logged in/out states"
 "Show me both the empty state (new user) and populated state (with data)"
