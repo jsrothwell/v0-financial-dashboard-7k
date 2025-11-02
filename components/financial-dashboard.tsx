@@ -3,7 +3,6 @@
 import { useState } from "react"
 import { useSettings } from "@/lib/use-settings"
 import { DEMO_TRANSACTIONS, DEMO_BUDGETS } from "@/lib/demo-data"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
@@ -16,29 +15,28 @@ import { getBudgetSummaries, getMonthlyBudgetStatus } from "@/lib/budget-utils"
 import { BudgetOverviewCard } from "./budget-overview-card"
 import { BudgetCategoryCard } from "./budget-category-card"
 import { useBudget } from "@/lib/budget-context"
+import { SpendingTrendsCard } from "./spending-trends-card"
+import { CategoryBreakdownCard } from "./category-breakdown-card"
+import { IncomeVsExpensesCard } from "./income-vs-expenses-card"
+import { UpcomingBillsCard } from "./upcoming-bills-card"
+import { SavingsGoalsCard } from "./savings-goals-card"
+import { CashFlowCard } from "./cash-flow-card"
+import {
+  getMonthlySpendingTrends,
+  getCategoryBreakdown,
+  getIncomeExpenseData,
+  getTrendPercentage,
+  generateUpcomingBills,
+  generateSavingsGoals,
+} from "@/lib/analytics-utils"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
-const spendingData = [
+const categoryBudgets = [
   { category: "Groceries", value: 450, percentage: 80 },
   { category: "Transport", value: 220, percentage: 42 },
   { category: "Entertainment", value: 110, percentage: 22 },
   { category: "Utilities", value: 85, percentage: 15 },
   { category: "Dining", value: 50, percentage: 8 },
-]
-
-const transactionData = [
-  { id: 1, merchant: "Amazon Purchase", category: "Shopping", amount: -150.0, date: "2023-10-01" },
-  { id: 2, merchant: "Uber Ride", category: "Transport", amount: -30.0, date: "2023-10-02" },
-  { id: 3, merchant: "Netflix Subscription", category: "Entertainment", amount: -15.99, date: "2023-10-03" },
-  { id: 4, merchant: "Starbucks Coffee", category: "Dining", amount: -5.0, date: "2023-10-04" },
-  { id: 5, merchant: "Grocery Store", category: "Groceries", amount: -200.0, date: "2023-10-05" },
-]
-
-const categoryBudgets = [
-  { category: "Groceries", spent: 450, budget: 500 },
-  { category: "Transport", spent: 220, budget: 300 },
-  { category: "Entertainment", spent: 110, budget: 200 },
-  { category: "Utilities", spent: 85, budget: 150 },
-  { category: "Dining", spent: 50, budget: 200 },
 ]
 
 export function FinancialDashboard() {
@@ -66,6 +64,41 @@ export function FinancialDashboard() {
       : []
 
   const categoryBudgets = sourceBudgets.length > 0 ? sourceBudgets : []
+
+  const monthlyTrends = getMonthlySpendingTrends(transactions, 6)
+  const categoryBreakdown = getCategoryBreakdown(transactions)
+  const incomeExpenseData = getIncomeExpenseData(transactions)
+  const upcomingBills = generateUpcomingBills()
+  const savingsGoals = generateSavingsGoals()
+
+  // Calculate trends for comparison
+  const lastMonthSpending = monthlyTrends[monthlyTrends.length - 2]?.amount || 0
+  const currentMonthSpending = monthlyTrends[monthlyTrends.length - 1]?.amount || 0
+  const spendingTrend = getTrendPercentage(currentMonthSpending, lastMonthSpending)
+  const averageSpending = monthlyTrends.reduce((sum, item) => sum + item.amount, 0) / monthlyTrends.length
+
+  // Calculate income/expense trends
+  const lastMonthIncomeExpense = getIncomeExpenseData(
+    transactions.filter((t) => {
+      const tDate = new Date(t.date)
+      const now = new Date()
+      return tDate.getMonth() === now.getMonth() - 1
+    }),
+  )
+  const incomeChange = getTrendPercentage(
+    incomeExpenseData.income,
+    lastMonthIncomeExpense.income || incomeExpenseData.income,
+  )
+  const expenseChange = getTrendPercentage(
+    incomeExpenseData.expenses,
+    lastMonthIncomeExpense.expenses || incomeExpenseData.expenses,
+  )
+
+  // Generate projected cash flow
+  const projectedCashFlow = Array.from({ length: 30 }, (_, i) => ({
+    day: `Day ${i + 1}`,
+    balance: Math.max(5000 + Math.random() * 5000 - i * 50, 2000),
+  }))
 
   const handleAddTransaction = (transaction: any) => {
     setTransactions([
@@ -185,6 +218,59 @@ export function FinancialDashboard() {
 
           {/* Budget by Category Card */}
           {enabledBudgets.length > 0 && <BudgetCategoryCard categories={budgetSummaries} />}
+
+          <div className="mb-8 mt-12">
+            <h3 className="text-2xl font-bold text-slate-900">Insights & Analytics</h3>
+            <p className="text-slate-600 mt-2">Deep dive into your financial trends and projections</p>
+          </div>
+
+          {transactions.length > 0 && (
+            <>
+              <SpendingTrendsCard
+                data={monthlyTrends}
+                averageSpending={Math.round(averageSpending)}
+                trendPercentage={spendingTrend.percentage}
+                trendDirection={spendingTrend.direction}
+                highestMonth={monthlyTrends.reduce((max, item) => (item.amount > max.amount ? item : max)).month}
+              />
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <CategoryBreakdownCard
+                  data={categoryBreakdown}
+                  totalSpending={Math.round(incomeExpenseData.expenses * 100) / 100}
+                />
+
+                <IncomeVsExpensesCard
+                  income={incomeExpenseData.income}
+                  expenses={incomeExpenseData.expenses}
+                  netChange={incomeExpenseData.netChange}
+                  savingsRate={incomeExpenseData.savingsRate}
+                  incomeChange={incomeChange.direction === "up" ? incomeChange.percentage : -incomeChange.percentage}
+                  expenseChange={
+                    expenseChange.direction === "up" ? expenseChange.percentage : -expenseChange.percentage
+                  }
+                />
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <UpcomingBillsCard
+                  bills={upcomingBills}
+                  totalDueThisMonth={upcomingBills.reduce((sum, bill) => sum + bill.amount, 0)}
+                />
+
+                <SavingsGoalsCard goals={savingsGoals} />
+              </div>
+
+              <CashFlowCard
+                projectedData={projectedCashFlow}
+                currentBalance={totalBalance}
+                projectedEndBalance={totalBalance - 1060}
+                nextIncome={{ date: "2025-11-15", amount: 3500 }}
+                nextExpense={{ date: "2025-11-08", amount: 1200 }}
+                lowBalanceWarning={false}
+              />
+            </>
+          )}
 
           {/* Budget Progress */}
           {categoryBudgets.length > 0 && (
