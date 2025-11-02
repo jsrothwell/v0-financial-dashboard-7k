@@ -44,10 +44,20 @@ export function FinancialDashboard() {
   const { budgetSettings } = useBudget()
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const sourceTransactions = settings.useDemoData ? DEMO_TRANSACTIONS : []
-  const sourceBudgets = settings.useDemoData ? DEMO_BUDGETS : []
+  // ✅ ADD THESE LINES
+  const [transactions, setTransactions] = useState<any[]>([])
 
-  const [transactions, setTransactions] = useState(sourceTransactions)
+  useEffect(() => {
+    if (settings.useDemoData) {
+      setTransactions(DEMO_TRANSACTIONS)
+    } else {
+      const saved = localStorage.getItem('userTransactions')
+      setTransactions(saved ? JSON.parse(saved) : [])
+    }
+  }, [settings.useDemoData])
+
+  const sourceBudgets = settings.useDemoData ? DEMO_BUDGETS : []
+  // ✅ END OF CHANGES
 
   const enabledBudgets = budgetSettings.budgets.filter((b) => b.enabled)
   const budgetStatus = getMonthlyBudgetStatus(enabledBudgets, transactions)
