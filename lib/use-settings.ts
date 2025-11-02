@@ -6,17 +6,24 @@ export interface UserSettings {
   displayName: string
   email: string
   theme: "light" | "dark"
-  currency: "USD" | "EUR" | "GBP"
+  currency: "CAD" | "USD" | "EUR" | "GBP"
   dateFormat: "MM/DD/YYYY" | "DD/MM/YYYY"
   useDemoData: boolean
   language: string
+}
+
+const currencySymbols = {
+  USD: "US$",
+  CAD: "$",  // or just "$" if you prefer
+  EUR: "€",
+  GBP: "£"
 }
 
 const DEFAULT_SETTINGS: UserSettings = {
   displayName: "",
   email: "",
   theme: "light",
-  currency: "USD",
+  currency: "CAD",
   dateFormat: "MM/DD/YYYY",
   useDemoData: false,
   language: "English",
