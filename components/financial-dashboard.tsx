@@ -69,11 +69,14 @@ export function FinancialDashboard() {
   const monthlySpent = Math.abs(transactions.filter((t) => t.type === "expense").reduce((sum, t) => sum + t.amount, 0))
 
   const spendingData =
-    sourceBudgets.length > 0
-      ? sourceBudgets.map((b) => ({ category: b.category, percentage: (b.spent / b.limit) * 100 }))
+    budgetSummaries.length > 0
+      ? budgetSummaries.map((b) => ({
+          category: b.category,
+          percentage: (b.spent / b.budgeted) * 100
+        }))
       : []
 
-  const categoryBudgets = sourceBudgets.length > 0 ? sourceBudgets : []
+  const categoryBudgets = budgetSummaries.length > 0 ? budgetSummaries : []
 
   const monthlyTrends = getMonthlySpendingTrends(transactions, 6)
   const categoryBreakdown = getCategoryBreakdown(transactions)
