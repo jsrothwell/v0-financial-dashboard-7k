@@ -1,5 +1,6 @@
 "use client"
 
+import { useRouter } from "next/navigation"
 import { AlertDialogFooter } from "@/components/ui/alert-dialog"
 
 import { useState } from "react"
@@ -22,12 +23,13 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Download, Trash2 } from "lucide-react"
+import { Download, Trash2, ArrowLeft } from "lucide-react"
 
 export function SettingsPage() {
   const { user, logout } = useAuth()
   const { settings, updateSettings } = useSettings()
   const [savedMessage, setSavedMessage] = useState(false)
+  const router = useRouter()
 
   const showSaved = () => {
     setSavedMessage(true)
@@ -59,6 +61,18 @@ export function SettingsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-slate-100 py-8 px-4">
       <div className="max-w-4xl mx-auto">
+        <div className="mb-8 flex items-center gap-4">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => router.push("/dashboard")}
+            className="gap-2 text-slate-600 hover:text-slate-900"
+          >
+            <ArrowLeft size={18} />
+            <span>Back to Dashboard</span>
+          </Button>
+        </div>
+
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-gray-900">Settings</h1>
           <p className="text-gray-600 mt-2">Manage your account and preferences</p>

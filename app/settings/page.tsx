@@ -3,6 +3,7 @@
 import { useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { useAuth } from "@/lib/auth-context"
+import { DashboardHeader } from "@/components/dashboard-header"
 import { SettingsPage } from "@/components/settings-page"
 
 export default function Settings() {
@@ -25,5 +26,10 @@ export default function Settings() {
     )
   }
 
-  return <SettingsPage />
+  return (
+    <>
+      <DashboardHeader />
+      <SettingsPage />
+    </>
+  )
 }
