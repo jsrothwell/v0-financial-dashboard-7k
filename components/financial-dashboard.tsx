@@ -1,5 +1,6 @@
 "use client"
 
+import { useState, useEffect } from "react"  // Add useEffect here
 import { useState } from "react"
 import { useSettings } from "@/lib/use-settings"
 import { DEMO_TRANSACTIONS, DEMO_BUDGETS } from "@/lib/demo-data"
