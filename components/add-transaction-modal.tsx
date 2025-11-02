@@ -15,28 +15,28 @@ interface AddTransactionModalProps {
 export function AddTransactionModal({ isOpen, onClose, onAdd }: AddTransactionModalProps) {
   const [amount, setAmount] = useState("")
   const [category, setCategory] = useState("")
-  const [description, setDescription] = useState("")  // ✅ ADD THIS
+  const [description, setDescription] = useState("") // ✅ ADD THIS
   const [date, setDate] = useState("")
   const [note, setNote] = useState("")
 
   const categories = ["Groceries", "Transport", "Entertainment", "Utilities", "Dining", "Shopping", "Other"]
 
   const handleSubmit = (e: React.FormEvent) => {
-  e.preventDefault()
-  if (amount && category) {
-    onAdd({
-      merchant: description || category,  // ✅ CHANGE: note → description
-      category,
-      amount: -Number.parseFloat(amount),
-    })
-    setAmount("")
-    setCategory("")
-    setDescription("")  // ✅ ADD THIS
-    setDate("")
-    setNote("")
-    onClose()
+    e.preventDefault()
+    if (amount && category) {
+      onAdd({
+        merchant: description || category, // ✅ CHANGE: note → description
+        category,
+        amount: -Number.parseFloat(amount),
+      })
+      setAmount("")
+      setCategory("")
+      setDescription("") // ✅ ADD THIS
+      setDate("")
+      setNote("")
+      onClose()
+    }
   }
-}
 
   if (!isOpen) return null
 
@@ -97,12 +97,12 @@ export function AddTransactionModal({ isOpen, onClose, onAdd }: AddTransactionMo
 
           {/* Description */}
           <div>
-            <label className="block text-sm font-medium text-slate-900 mb-2">Description</label>  {/* ✅ CHANGE */}
+            <label className="block text-sm font-medium text-slate-900 mb-2">Description</label>
             <input
               type="text"
-              placeholder="e.g., Grocery Store, Coffee Shop"  {/* ✅ CHANGE */}
-              value={description}  {/* ✅ CHANGE: note → description */}
-              onChange={(e) => setDescription(e.target.value)}  {/* ✅ CHANGE */}
+              placeholder="e.g., Grocery Store, Coffee Shop"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
               className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent text-slate-900 placeholder-slate-400"
             />
           </div>
