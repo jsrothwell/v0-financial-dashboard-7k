@@ -122,3 +122,5 @@ export const DEMO_BUDGETS = [
   { id: "7", category: "Shopping", limit: 400, enabled: true },
   { id: "8", category: "Other", limit: 300, enabled: true },
 ]
+
+export type Transaction = (typeof DEMO_TRANSACTIONS)[number]
