@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 import { AuthProvider } from "@/lib/auth-context"
 import { CookieConsentBanner } from "@/components/cookie-consent-banner"
+import { BudgetProvider } from "@/lib/budget-context"
 
 const _geist = Geist({ subsets: ["latin"] })
 const _geistMono = Geist_Mono({ subsets: ["latin"] })
@@ -24,8 +25,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={`font-sans antialiased`}>
         <AuthProvider>
-          {children}
-          <CookieConsentBanner />
+          <BudgetProvider>
+            {children}
+            <CookieConsentBanner />
+          </BudgetProvider>
         </AuthProvider>
         <Analytics />
       </body>

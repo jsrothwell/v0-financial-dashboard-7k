@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Download, Trash2, ArrowLeft } from "lucide-react"
+import { BudgetSettingsPanel } from "./budget-settings-panel"
 
 export function SettingsPage() {
   const { user, logout } = useAuth()
@@ -85,9 +86,10 @@ export function SettingsPage() {
         )}
 
         <Tabs defaultValue="account" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="account">Account</TabsTrigger>
             <TabsTrigger value="preferences">Preferences</TabsTrigger>
+            <TabsTrigger value="budget">Budget</TabsTrigger>
             <TabsTrigger value="demo">Demo Mode</TabsTrigger>
             <TabsTrigger value="privacy">Privacy</TabsTrigger>
           </TabsList>
@@ -205,6 +207,11 @@ export function SettingsPage() {
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          {/* Budget Settings Tab */}
+          <TabsContent value="budget">
+            <BudgetSettingsPanel />
           </TabsContent>
 
           {/* Demo Mode Tab */}

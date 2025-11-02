@@ -12,6 +12,10 @@ import { AddTransactionModal } from "./add-transaction-modal"
 import { DashboardHeader } from "./dashboard-header"
 import { DashboardFooter } from "./dashboard-footer"
 import { DemoModeBanner } from "./demo-mode-banner"
+import { getBudgetSummaries, getMonthlyBudgetStatus } from "@/lib/budget-utils"
+import { BudgetOverviewCard } from "./budget-overview-card"
+import { BudgetCategoryCard } from "./budget-category-card"
+import { useBudget } from "@/lib/budget-context"
 
 const spendingData = [
   { category: "Groceries", value: 450, percentage: 80 },
@@ -39,12 +43,17 @@ const categoryBudgets = [
 
 export function FinancialDashboard() {
   const { settings } = useSettings()
+  const { budgetSettings } = useBudget()
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const sourceTransactions = settings.useDemoData ? DEMO_TRANSACTIONS : []
   const sourceBudgets = settings.useDemoData ? DEMO_BUDGETS : []
 
   const [transactions, setTransactions] = useState(sourceTransactions)
+
+  const enabledBudgets = budgetSettings.budgets.filter((b) => b.enabled)
+  const budgetStatus = getMonthlyBudgetStatus(enabledBudgets, transactions)
+  const budgetSummaries = getBudgetSummaries(enabledBudgets, transactions)
 
   const totalBalance = settings.useDemoData ? 20080.95 : 12400
   const lastMonthBalance = settings.useDemoData ? 18200 : 11236
@@ -162,6 +171,20 @@ export function FinancialDashboard() {
               </CardContent>
             </Card>
           </div>
+
+          {/* Budget Overview Card */}
+          {enabledBudgets.length > 0 && (
+            <BudgetOverviewCard
+              totalBudget={budgetStatus.totalBudget}
+              totalSpent={budgetStatus.totalSpent}
+              percentage={budgetStatus.percentage}
+              status={budgetStatus.status}
+              daysRemaining={budgetStatus.daysRemaining}
+            />
+          )}
+
+          {/* Budget by Category Card */}
+          {enabledBudgets.length > 0 && <BudgetCategoryCard categories={budgetSummaries} />}
 
           {/* Budget Progress */}
           {categoryBudgets.length > 0 && (

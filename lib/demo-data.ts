@@ -113,10 +113,12 @@ export const DEMO_TRANSACTIONS = [
 ]
 
 export const DEMO_BUDGETS = [
-  { category: "Groceries", limit: 500, spent: 385.25 },
-  { category: "Transportation", limit: 200, spent: 154.25 },
-  { category: "Dining", limit: 300, spent: 169.75 },
-  { category: "Entertainment", limit: 100, spent: 55.98 },
-  { category: "Utilities", limit: 400, spent: 375.5 },
-  { category: "Rent", limit: 1500, spent: 1200 },
+  { id: "1", category: "Rent", limit: 1500, enabled: true },
+  { id: "2", category: "Groceries", limit: 500, enabled: true },
+  { id: "3", category: "Transportation", limit: 300, enabled: true },
+  { id: "4", category: "Dining", limit: 300, enabled: true },
+  { id: "5", category: "Entertainment", limit: 200, enabled: true },
+  { id: "6", category: "Utilities", limit: 400, enabled: true },
+  { id: "7", category: "Shopping", limit: 400, enabled: true },
+  { id: "8", category: "Other", limit: 300, enabled: true },
 ]
