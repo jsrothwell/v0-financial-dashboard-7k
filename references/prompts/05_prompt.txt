@@ -244,14 +244,14 @@ ACCESSIBILITY:
 - High contrast mode support
 
 Make all components responsive, performant with large datasets, and visually appealing. Use Recharts library, shadcn/ui components, and Tailwind CSS.
-```
+\`\`\`
 
 ---
 
 ## Alternative: Simplified Version (Build Feature by Feature)
 
 ### Option A: Start with Charts Only
-```
+\`\`\`
 Add data visualization to the dashboard:
 
 SPENDING TRENDS LINE CHART:
@@ -277,10 +277,10 @@ CATEGORY BREAKDOWN DONUT CHART:
 - Make segments clickable to filter transactions
 
 Use ResponsiveContainer for mobile responsiveness. Match existing dashboard card styling.
-```
+\`\`\`
 
 ### Option B: Start with Upcoming Bills
-```
+\`\`\`
 Add Upcoming Bills card to dashboard:
 
 UPCOMING BILLS LIST:
@@ -304,10 +304,10 @@ Summary at top:
 - "Next up: Netflix in 3 days"
 
 Add "Add Recurring Bill" button at bottom. Sort by due date (soonest first).
-```
+\`\`\`
 
 ### Option C: Start with Savings Goals
-```
+\`\`\`
 Add Savings Goals tracking to dashboard:
 
 SAVINGS GOAL CARDS:
@@ -336,12 +336,12 @@ Each goal in a card with:
 - "Edit Goal" button
 
 Add "Create New Goal" button. Show projection: "At current rate, complete by May 2026"
-```
+\`\`\`
 
 ---
 
 ## After v0 Generates, You Can Enhance With:
-```
+\`\`\`
 "Add a time range selector to switch between 1M, 3M, 6M views"
 "Make the donut chart segments animate on load"
 "Add export to CSV button for the spending trends"
