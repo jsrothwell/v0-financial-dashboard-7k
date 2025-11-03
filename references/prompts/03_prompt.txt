@@ -1,0 +1,86 @@
+Fix navigation issue on the Settings page:
+
+PROBLEM: Users cannot return to the dashboard from the Settings page.
+
+ADD THE FOLLOWING NAVIGATION OPTIONS:
+
+1. Back Button (Top Left):
+   - Add a "← Back to Dashboard" button or link in the top left of the Settings page
+   - Or use a simple "← Back" button
+   - Should navigate to the main dashboard route
+   - Use lucide-react ArrowLeft icon
+
+2. Persistent Header/Navigation:
+   - Ensure the main navigation header stays visible on the Settings page
+   - Include logo/app name that's clickable (goes to dashboard)
+   - Keep the user dropdown menu accessible from Settings page
+
+3. Breadcrumbs (Optional):
+   - Add breadcrumb navigation: "Dashboard > Settings"
+   - Make "Dashboard" clickable to return home
+
+4. Close Button (Alternative):
+   - If Settings is modal-style, add X button in top right corner
+   - Clicking closes settings and returns to dashboard
+
+RECOMMENDED APPROACH:
+Add a header to the Settings page that includes:
+- Left side: "← Back" button or clickable logo
+- Center: "Settings" title
+- Right side: User menu (if applicable)
+
+Use React Router's useNavigate() hook to handle navigation:
+- onClick: navigate('/dashboard') or navigate(-1) to go back
+
+Make sure the navigation is consistent across all pages (Dashboard, Settings, Terms, Privacy, etc.)
+\`\`\`
+
+---
+
+## Alternative: Simple One-Liner Prompt
+
+If v0 just needs a quick fix:
+\`\`\`
+Add a "← Back to Dashboard" button at the top left of the Settings page that navigates back to the main dashboard when clicked.
+\`\`\`
+
+---
+
+## More Comprehensive Navigation Prompt
+
+If you want to improve navigation throughout the app:
+\`\`\`
+Improve navigation across the entire app:
+
+1. PERSISTENT HEADER (all pages):
+   - Logo/app name in top left (always clickable, goes to dashboard)
+   - Main navigation links: Dashboard | Transactions | Budget | Reports
+   - User menu in top right: Settings, Help, Logout
+
+2. SETTINGS PAGE SPECIFIC:
+   - Add "← Back to Dashboard" button above the settings content
+   - Or add "Close" (X) button if settings feels modal-like
+   - Breadcrumbs: Home > Settings
+
+3. LEGAL PAGES (Terms, Privacy):
+   - Add "← Back" button
+   - Or show simplified header with logo and close button
+
+4. ALL PAGES SHOULD:
+   - Have a way to return to dashboard
+   - Show current page indicator in navigation
+   - Use React Router for proper navigation
+   - Include keyboard shortcuts (ESC to close modals/settings)
+
+5. MOBILE NAVIGATION:
+   - Hamburger menu for navigation links
+   - Back button always visible
+   - Bottom navigation bar (optional) for key sections
+
+IMPLEMENTATION:
+- Create a reusable Header component
+- Create a reusable PageHeader component for individual pages
+- Use useNavigate() from react-router-dom for programmatic navigation
+- Ensure all navigation is keyboard accessible
+
+Make navigation intuitive and consistent across the entire app.
