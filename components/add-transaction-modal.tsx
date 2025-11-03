@@ -13,25 +13,30 @@ interface AddTransactionModalProps {
 }
 
 export function AddTransactionModal({ isOpen, onClose, onAdd }: AddTransactionModalProps) {
+  const [transactionType, setTransactionType] = useState<"expense" | "income">("expense")
   const [amount, setAmount] = useState("")
   const [category, setCategory] = useState("")
-  const [description, setDescription] = useState("") // ✅ ADD THIS
+  const [description, setDescription] = useState("")
   const [date, setDate] = useState("")
   const [note, setNote] = useState("")
 
-  const categories = ["Groceries", "Transport", "Entertainment", "Utilities", "Dining", "Shopping", "Other"]
+  const expenseCategories = ["Groceries", "Transport", "Entertainment", "Utilities", "Dining", "Shopping", "Other"]
+  const incomeCategories = ["Salary", "Freelance", "Investment", "Gift", "Bonus", "Refund", "Other"]
+
+  const categories = transactionType === "expense" ? expenseCategories : incomeCategories
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (amount && category) {
+      const numericAmount = Number.parseFloat(amount)
       onAdd({
-        merchant: description || category, // ✅ CHANGE: note → description
+        merchant: description || category,
         category,
-        amount: -Number.parseFloat(amount),
+        amount: transactionType === "expense" ? -numericAmount : numericAmount,
       })
       setAmount("")
       setCategory("")
-      setDescription("") // ✅ ADD THIS
+      setDescription("")
       setDate("")
       setNote("")
       onClose()
@@ -51,6 +56,41 @@ export function AddTransactionModal({ isOpen, onClose, onAdd }: AddTransactionMo
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
+          {/* Transaction Type */}
+          <div>
+            <label className="block text-sm font-medium text-slate-900 mb-2">Type</label>
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setTransactionType("expense")
+                  setCategory("") // Reset category when switching types
+                }}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  transactionType === "expense"
+                    ? "bg-red-600 text-white"
+                    : "bg-slate-50 text-slate-600 border border-slate-200 hover:bg-slate-100"
+                }`}
+              >
+                Expense
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setTransactionType("income")
+                  setCategory("") // Reset category when switching types
+                }}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  transactionType === "income"
+                    ? "bg-green-600 text-white"
+                    : "bg-slate-50 text-slate-600 border border-slate-200 hover:bg-slate-100"
+                }`}
+              >
+                Income
+              </button>
+            </div>
+          </div>
+
           {/* Amount */}
           <div>
             <label className="block text-sm font-medium text-slate-900 mb-2">Amount</label>
@@ -100,14 +140,16 @@ export function AddTransactionModal({ isOpen, onClose, onAdd }: AddTransactionMo
             <label className="block text-sm font-medium text-slate-900 mb-2">Description</label>
             <input
               type="text"
-              placeholder="e.g., Grocery Store, Coffee Shop"
+              placeholder={
+                transactionType === "expense" ? "e.g., Grocery Store, Coffee Shop" : "e.g., Monthly Salary, Freelance Project"
+              }
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent text-slate-900 placeholder-slate-400"
             />
           </div>
 
-          {/* Note - keep this as optional */}
+          {/* Note */}
           <div>
             <label className="block text-sm font-medium text-slate-900 mb-2">Note (Optional)</label>
             <textarea
