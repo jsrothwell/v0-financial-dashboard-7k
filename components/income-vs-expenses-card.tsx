@@ -59,15 +59,15 @@ export function IncomeVsExpensesCard({
         </ResponsiveContainer>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg p-3 md:p-4 border border-green-200 min-w-0">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-3">
+          <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg p-3 border border-green-200">
             <p className="text-xs font-semibold text-green-700 uppercase tracking-wide mb-1">Income</p>
-            <p className="text-lg md:text-xl lg:text-2xl font-bold text-green-900 truncate">${income.toLocaleString()}</p>
+            <p className="text-xl font-bold text-green-900 break-words">${income.toLocaleString()}</p>
             <div className="flex items-center gap-1 mt-2">
               {incomeChange >= 0 ? (
-                <TrendingUp className="w-4 h-4 text-green-600 flex-shrink-0" />
+                <TrendingUp className="w-3.5 h-3.5 text-green-600 flex-shrink-0" />
               ) : (
-                <TrendingDown className="w-4 h-4 text-red-600 flex-shrink-0" />
+                <TrendingDown className="w-3.5 h-3.5 text-red-600 flex-shrink-0" />
               )}
               <span className={`text-xs font-semibold ${incomeChange >= 0 ? "text-green-600" : "text-red-600"}`}>
                 {incomeChange >= 0 ? "+" : ""}
@@ -76,14 +76,14 @@ export function IncomeVsExpensesCard({
             </div>
           </div>
 
-          <div className="bg-gradient-to-br from-red-50 to-rose-50 rounded-lg p-3 md:p-4 border border-red-200 min-w-0">
+          <div className="bg-gradient-to-br from-red-50 to-rose-50 rounded-lg p-3 border border-red-200">
             <p className="text-xs font-semibold text-red-700 uppercase tracking-wide mb-1">Expenses</p>
-            <p className="text-lg md:text-xl lg:text-2xl font-bold text-red-900 truncate">${expenses.toLocaleString()}</p>
+            <p className="text-xl font-bold text-red-900 break-words">${expenses.toLocaleString()}</p>
             <div className="flex items-center gap-1 mt-2">
               {expenseChange <= 0 ? (
-                <TrendingDown className="w-4 h-4 text-green-600 flex-shrink-0" />
+                <TrendingDown className="w-3.5 h-3.5 text-green-600 flex-shrink-0" />
               ) : (
-                <TrendingUp className="w-4 h-4 text-red-600 flex-shrink-0" />
+                <TrendingUp className="w-3.5 h-3.5 text-red-600 flex-shrink-0" />
               )}
               <span className={`text-xs font-semibold ${expenseChange <= 0 ? "text-green-600" : "text-red-600"}`}>
                 {expenseChange >= 0 ? "+" : ""}
@@ -93,7 +93,7 @@ export function IncomeVsExpensesCard({
           </div>
 
           <div
-            className={`rounded-lg p-3 md:p-4 border min-w-0 ${netChange >= 0 ? "bg-gradient-to-br from-teal-50 to-cyan-50 border-teal-200" : "bg-gradient-to-br from-orange-50 to-amber-50 border-orange-200"}`}
+            className={`rounded-lg p-3 border ${netChange >= 0 ? "bg-gradient-to-br from-teal-50 to-cyan-50 border-teal-200" : "bg-gradient-to-br from-orange-50 to-amber-50 border-orange-200"}`}
           >
             <p
               className="text-xs font-semibold uppercase tracking-wide mb-1"
@@ -101,14 +101,14 @@ export function IncomeVsExpensesCard({
             >
               Net Change
             </p>
-            <p className={`text-lg md:text-xl lg:text-2xl font-bold truncate ${netChange >= 0 ? "text-teal-900" : "text-orange-900"}`}>
+            <p className={`text-xl font-bold break-words ${netChange >= 0 ? "text-teal-900" : "text-orange-900"}`}>
               {netChange >= 0 ? "+" : "-"}${Math.abs(netChange).toLocaleString()}
             </p>
           </div>
 
-          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-3 md:p-4 border border-blue-200 min-w-0">
+          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-3 border border-blue-200">
             <p className="text-xs font-semibold text-blue-700 uppercase tracking-wide mb-1">Savings Rate</p>
-            <p className="text-lg md:text-xl lg:text-2xl font-bold text-blue-900">{savingsRate}%</p>
+            <p className="text-xl font-bold text-blue-900">{savingsRate}%</p>
             <p className="text-xs text-blue-600 mt-2">{savingsRate >= 20 ? "Healthy" : "Build up savings"}</p>
           </div>
         </div>
