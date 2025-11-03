@@ -21,6 +21,7 @@ import { IncomeVsExpensesCard } from "./income-vs-expenses-card"
 import { UpcomingBillsCard } from "./upcoming-bills-card"
 import { SavingsGoalsCard } from "./savings-goals-card"
 import { CashFlowCard } from "./cash-flow-card"
+import { formatCurrency } from "@/lib/currency-utils"
 import {
   getMonthlySpendingTrends,
   getCategoryBreakdown,

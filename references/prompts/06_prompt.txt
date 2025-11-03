@@ -1,0 +1,73 @@
+Fix UI bugs in financial dashboard and add income, bill, and savings goal entry features
+I have a financial tracker dashboard with the following issues that need to be fixed:
+1. Income vs Expenses Section - Layout Bug:
+
+The circular progress indicators showing "Spent Budget" ($3,500), "Safe to Spend" ($4,129), and "Total Budget" ($9,304.29) have numbers breaking out of their containers
+Fix by reducing font sizes for the currency values to ensure they fit within their designated spaces
+Prefer using text-sm or text-xs for the dollar amounts instead of text wrapping
+Ensure proper spacing and padding within each circular card
+The labels should remain readable while the numbers scale down as needed
+
+2. Add Manual Income Entry Feature:
+
+Add a button (e.g., "+ Add Income") near the top of the dashboard or in the Income vs Expenses section
+When clicked, open a modal/dialog with a form containing:
+
+Amount input field (number)
+Description/source field (text) - e.g., "Freelance project", "Side gig"
+Date picker (default to today)
+Category dropdown (optional) - e.g., "Freelance", "Bonus", "Investment", "Other"
+Submit and Cancel buttons
+
+
+Upon submission, update the Total Balance and reflect the new income in the dashboard
+Show a success toast notification after adding income
+
+3. Make "Add Bill" Button Functional:
+
+The existing "+ Add Bill" button currently does nothing - make it functional
+When clicked, open a modal/dialog with a form containing:
+
+Bill name/description field (text) - e.g., "Netflix", "Electric bill"
+Amount input field (number)
+Due date picker
+Recurring frequency dropdown - options: "One-time", "Weekly", "Monthly", "Yearly"
+Category dropdown - e.g., "Utilities", "Subscriptions", "Insurance", "Rent", "Other"
+Payment status toggle - "Paid" or "Unpaid"
+Submit and Cancel buttons
+
+
+Upon submission, add the bill to the "Recent by Category" section under the appropriate category
+Update the expense totals and budget calculations
+Show a success toast notification after adding the bill
+
+4. Make "Add Savings Goal" Button Functional:
+
+The existing button for adding savings goals currently does nothing - make it functional
+When clicked, open a modal/dialog with a form containing:
+
+Goal name field (text) - e.g., "Emergency Fund", "Vacation", "New Car"
+Target amount input field (number)
+Current amount/starting balance input field (number, default to 0)
+Target date picker (optional)
+Description field (optional, textarea)
+Submit and Cancel buttons
+
+
+Upon submission, add the new savings goal to the savings goals section
+Show progress bar and percentage toward goal
+Show a success toast notification after adding the goal
+Include ability to add money to existing goals
+
+Design requirements:
+
+Maintain the current teal/turquoise color scheme (#14B8A6 or similar)
+Keep the clean, modern aesthetic with proper spacing
+Ensure all text is legible and properly contained within components
+Use Tailwind CSS classes with proper responsive sizing (text-xs, text-sm, text-base)
+Make sure number formatting includes proper currency symbols and comma separators
+All modals should have a backdrop overlay and close button (X)
+Forms should have proper validation (required fields, positive numbers for amounts)
+Use consistent button styling across all modals
+
+Please generate the updated component with these fixes and all new functionality.
