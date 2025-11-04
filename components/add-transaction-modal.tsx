@@ -56,9 +56,9 @@ export function AddTransactionModal({ isOpen, onClose, onAdd }: AddTransactionMo
           </button>
         </div>
 
-        {/* Form Content - Scrollable */}
-        <div className="overflow-y-auto flex-1">
-          <form onSubmit={handleSubmit} className="p-6 space-y-4">
+        <form onSubmit={handleSubmit} className="flex flex-col flex-1 min-h-0">
+          {/* Form Fields - Scrollable */}
+          <div className="overflow-y-auto flex-1 p-6 space-y-4">
             {/* Transaction Type */}
             <div>
               <label className="block text-sm font-medium text-slate-900 mb-2">Type</label>
@@ -144,7 +144,9 @@ export function AddTransactionModal({ isOpen, onClose, onAdd }: AddTransactionMo
               <input
                 type="text"
                 placeholder={
-                  transactionType === "expense" ? "e.g., Grocery Store, Coffee Shop" : "e.g., Monthly Salary, Freelance Project"
+                  transactionType === "expense"
+                    ? "e.g., Grocery Store, Coffee Shop"
+                    : "e.g., Monthly Salary, Freelance Project"
                 }
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
@@ -162,23 +164,23 @@ export function AddTransactionModal({ isOpen, onClose, onAdd }: AddTransactionMo
                 className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent text-slate-900 placeholder-slate-400 resize-none h-24"
               />
             </div>
+          </div>
 
-            {/* Buttons */}
-            <div className="flex gap-3 pt-4">
-              <Button
-                type="button"
-                onClick={onClose}
-                variant="outline"
-                className="flex-1 border-teal-600 text-teal-600 hover:bg-teal-50 bg-transparent"
-              >
-                Cancel
-              </Button>
-              <Button type="submit" className="flex-1 bg-teal-600 hover:bg-teal-700 text-white">
-                Save
-              </Button>
-            </div>
-          </form>
-        </div>
+          {/* Buttons - Fixed at Bottom */}
+          <div className="flex gap-3 p-6 border-t border-slate-200 flex-shrink-0">
+            <Button
+              type="button"
+              onClick={onClose}
+              variant="outline"
+              className="flex-1 border-teal-600 text-teal-600 hover:bg-teal-50 bg-transparent"
+            >
+              Cancel
+            </Button>
+            <Button type="submit" className="flex-1 bg-teal-600 hover:bg-teal-700 text-white">
+              Save
+            </Button>
+          </div>
+        </form>
       </div>
     </div>
   )
