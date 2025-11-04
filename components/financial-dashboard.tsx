@@ -44,10 +44,11 @@ export function FinancialDashboard() {
   const { settings } = useSettings()
   const { budgetSettings } = useBudget()
   const [isModalOpen, setIsModalOpen] = useState(false)
-
-  // ✅ ADD THESE LINES
   const [transactions, setTransactions] = useState<any[]>([])
+  const [bills, setBills] = useState<any[]>([])
+  const [savingsGoals, setSavingsGoals] = useState<any[]>([])
 
+  // Load transactions
   useEffect(() => {
     if (settings.useDemoData) {
       setTransactions(DEMO_TRANSACTIONS)
@@ -57,8 +58,27 @@ export function FinancialDashboard() {
     }
   }, [settings.useDemoData])
 
+  // Load bills
+  useEffect(() => {
+    if (settings.useDemoData) {
+      setBills(generateUpcomingBills())
+    } else {
+      const saved = localStorage.getItem("userBills")
+      setBills(saved ? JSON.parse(saved) : [])
+    }
+  }, [settings.useDemoData])
+
+  // Load savings goals
+  useEffect(() => {
+    if (settings.useDemoData) {
+      setSavingsGoals(generateSavingsGoals())
+    } else {
+      const saved = localStorage.getItem("userSavingsGoals")
+      setSavingsGoals(saved ? JSON.parse(saved) : [])
+    }
+  }, [settings.useDemoData])
+
   const sourceBudgets = settings.useDemoData ? DEMO_BUDGETS : []
-  // ✅ END OF CHANGES
 
   const enabledBudgets = budgetSettings.budgets.filter((b) => b.enabled)
   const budgetStatus = getMonthlyBudgetStatus(enabledBudgets, transactions)
@@ -73,7 +93,7 @@ export function FinancialDashboard() {
     budgetSummaries.length > 0
       ? budgetSummaries.map((b) => ({
           category: b.category,
-          percentage: (b.spent / b.budgeted) * 100
+          percentage: (b.spent / b.budgeted) * 100,
         }))
       : []
 
@@ -82,8 +102,6 @@ export function FinancialDashboard() {
   const monthlyTrends = getMonthlySpendingTrends(transactions, 6)
   const categoryBreakdown = getCategoryBreakdown(transactions)
   const incomeExpenseData = getIncomeExpenseData(transactions)
-  const upcomingBills = generateUpcomingBills()
-  const savingsGoals = generateSavingsGoals()
 
   // Calculate trends for comparison
   const lastMonthSpending = monthlyTrends[monthlyTrends.length - 2]?.amount || 0
@@ -115,15 +133,111 @@ export function FinancialDashboard() {
   }))
 
   const handleAddTransaction = (transaction: any) => {
-    setTransactions([
-      {
-        id: Math.random().toString(36).substr(2, 9),
-        ...transaction,
-        date: new Date().toISOString().split("T")[0],
-        type: transaction.amount < 0 ? "expense" : "income",
-      },
-      ...transactions,
-    ])
+    const newTransaction = {
+      id: Math.random().toString(36).substr(2, 9),
+      description: transaction.merchant,
+      category: transaction.category,
+      amount: Math.abs(transaction.amount),
+      date: new Date().toISOString().split("T")[0],
+      type: transaction.amount < 0 ? "expense" : "income",
+    }
+
+    const updatedTransactions = [newTransaction, ...transactions]
+    setTransactions(updatedTransactions)
+
+    // Persist to localStorage if not in demo mode
+    if (!settings.useDemoData) {
+      localStorage.setItem("userTransactions", JSON.stringify(updatedTransactions))
+    }
+  }
+
+  const handleAddBill = (bill: {
+    name: string
+    amount: number
+    dueDate: string
+    category: string
+    recurring: boolean
+  }) => {
+    const dueDate = new Date(bill.dueDate)
+    const today = new Date()
+    const daysUntil = Math.ceil((dueDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24))
+
+    const newBill = {
+      id: Math.random().toString(36).substr(2, 9),
+      name: bill.name,
+      amount: bill.amount,
+      dueDate: bill.dueDate,
+      category: bill.category,
+      status: "pending" as const,
+      daysUntil,
+      recurring: bill.recurring,
+    }
+
+    const updatedBills = [...bills, newBill]
+    setBills(updatedBills)
+
+    // Persist to localStorage if not in demo mode
+    if (!settings.useDemoData) {
+      localStorage.setItem("userBills", JSON.stringify(updatedBills))
+    }
+  }
+
+  const handleMarkBillPaid = (billId: string) => {
+    const updatedBills = bills.map((bill) => (bill.id === billId ? { ...bill, status: "paid" as const } : bill))
+    setBills(updatedBills)
+
+    // Persist to localStorage if not in demo mode
+    if (!settings.useDemoData) {
+      localStorage.setItem("userBills", JSON.stringify(updatedBills))
+    }
+  }
+
+  const handleAddSavingsGoal = (goal: {
+    name: string
+    target: number
+    current: number
+    targetDate: string
+    monthlyContribution: number
+  }) => {
+    const targetDate = new Date(goal.targetDate)
+    const today = new Date()
+    const monthsRemaining = Math.ceil((targetDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24 * 30))
+    const percentage = Math.round((goal.current / goal.target) * 100)
+
+    // Calculate projected completion date based on monthly contribution
+    const remaining = goal.target - goal.current
+    const monthsToComplete = Math.ceil(remaining / goal.monthlyContribution)
+    const projectedDate = new Date()
+    projectedDate.setMonth(projectedDate.getMonth() + monthsToComplete)
+
+    // Determine status
+    let status: "on-track" | "behind" | "ahead" = "on-track"
+    if (monthsToComplete < monthsRemaining) {
+      status = "ahead"
+    } else if (monthsToComplete > monthsRemaining) {
+      status = "behind"
+    }
+
+    const newGoal = {
+      id: Math.random().toString(36).substr(2, 9),
+      name: goal.name,
+      target: goal.target,
+      current: goal.current,
+      targetDate: goal.targetDate,
+      monthlyContribution: goal.monthlyContribution,
+      percentage,
+      status,
+      monthsRemaining,
+      projectedDate: projectedDate.toISOString().split("T")[0],
+    }
+
+    const updatedGoals = [...savingsGoals, newGoal]
+    setSavingsGoals(updatedGoals)
+
+    // Persist to localStorage if not in demo mode
+    if (!settings.useDemoData) {
+      localStorage.setItem("userSavingsGoals", JSON.stringify(updatedGoals))
+    }
   }
 
   return (
@@ -268,11 +382,13 @@ export function FinancialDashboard() {
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
                 <UpcomingBillsCard
-                  bills={upcomingBills}
-                  totalDueThisMonth={upcomingBills.reduce((sum, bill) => sum + bill.amount, 0)}
+                  bills={bills}
+                  totalDueThisMonth={bills.reduce((sum, bill) => sum + bill.amount, 0)}
+                  onAddBill={handleAddBill}
+                  onMarkPaid={handleMarkBillPaid}
                 />
 
-                <SavingsGoalsCard goals={savingsGoals} />
+                <SavingsGoalsCard goals={savingsGoals} onAddGoal={handleAddSavingsGoal} />
               </div>
 
               <CashFlowCard
