@@ -32,14 +32,6 @@ import {
 } from "@/lib/analytics-utils"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
-const categoryBudgets = [
-  { category: "Groceries", value: 450, percentage: 80 },
-  { category: "Transport", value: 220, percentage: 42 },
-  { category: "Entertainment", value: 110, percentage: 22 },
-  { category: "Utilities", value: 85, percentage: 15 },
-  { category: "Dining", value: 50, percentage: 8 },
-]
-
 export function FinancialDashboard() {
   const { settings } = useSettings()
   const { budgetSettings } = useBudget()
@@ -137,7 +129,7 @@ export function FinancialDashboard() {
       id: Math.random().toString(36).substr(2, 9),
       description: transaction.merchant,
       category: transaction.category,
-      amount: Math.abs(transaction.amount),
+      amount: transaction.amount,
       date: new Date().toISOString().split("T")[0],
       type: transaction.amount < 0 ? "expense" : "income",
     }
