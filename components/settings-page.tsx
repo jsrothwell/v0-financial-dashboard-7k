@@ -1,6 +1,6 @@
 "use client"
 
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { AlertDialogFooter } from "@/components/ui/alert-dialog"
 
 import { useState } from "react"
@@ -31,6 +31,10 @@ export function SettingsPage() {
   const { settings, updateSettings } = useSettings()
   const [savedMessage, setSavedMessage] = useState(false)
   const router = useRouter()
+  const searchParams = useSearchParams()
+
+  // Get the tab from URL query parameter, default to "account" if not present
+  const activeTab = searchParams.get("tab") || "account"
 
   const showSaved = () => {
     setSavedMessage(true)
@@ -85,7 +89,7 @@ export function SettingsPage() {
           </Alert>
         )}
 
-        <Tabs defaultValue="account" className="space-y-6">
+        <Tabs value={activeTab} onValueChange={(value) => router.push(`/settings?tab=${value}`)} className="space-y-6">
           <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="account">Account</TabsTrigger>
             <TabsTrigger value="preferences">Preferences</TabsTrigger>
