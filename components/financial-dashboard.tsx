@@ -6,7 +6,7 @@ import { DEMO_TRANSACTIONS, DEMO_BUDGETS } from "@/lib/demo-data"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
-import { TrendingUp, Plus } from "lucide-react"
+import { TrendingUp, Plus, Trash2 } from "lucide-react"
 import { AddTransactionModal } from "./add-transaction-modal"
 import { DashboardHeader } from "./dashboard-header"
 import { DashboardFooter } from "./dashboard-footer"
@@ -31,6 +31,17 @@ import {
   generateSavingsGoals,
 } from "@/lib/analytics-utils"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 export function FinancialDashboard() {
   const { settings } = useSettings()
@@ -39,6 +50,7 @@ export function FinancialDashboard() {
   const [transactions, setTransactions] = useState<any[]>([])
   const [bills, setBills] = useState<any[]>([])
   const [savingsGoals, setSavingsGoals] = useState<any[]>([])
+  const [deleteTransactionId, setDeleteTransactionId] = useState<string | null>(null)
 
   // Load transactions
   useEffect(() => {
@@ -141,6 +153,18 @@ export function FinancialDashboard() {
     if (!settings.useDemoData) {
       localStorage.setItem("userTransactions", JSON.stringify(updatedTransactions))
     }
+  }
+
+  const handleDeleteTransaction = (transactionId: string) => {
+    const updatedTransactions = transactions.filter((t) => t.id !== transactionId)
+    setTransactions(updatedTransactions)
+
+    // Persist to localStorage if not in demo mode
+    if (!settings.useDemoData) {
+      localStorage.setItem("userTransactions", JSON.stringify(updatedTransactions))
+    }
+
+    setDeleteTransactionId(null)
   }
 
   const handleAddBill = (bill: {
@@ -452,6 +476,7 @@ export function FinancialDashboard() {
                         <th className="text-left py-3 px-4 text-sm font-semibold text-slate-600">Category</th>
                         <th className="text-left py-3 px-4 text-sm font-semibold text-slate-600">Date</th>
                         <th className="text-right py-3 px-4 text-sm font-semibold text-slate-600">Amount</th>
+                        <th className="text-right py-3 px-4 text-sm font-semibold text-slate-600">Actions</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -471,6 +496,39 @@ export function FinancialDashboard() {
                             className={`py-3 px-4 text-sm font-semibold text-right ${transaction.type === "expense" ? "text-red-600" : "text-green-600"}`}
                           >
                             {transaction.type === "expense" ? "-" : "+"}${Math.abs(transaction.amount).toFixed(2)}
+                          </td>
+                          <td className="py-3 px-4 text-right">
+                            <AlertDialog>
+                              <AlertDialogTrigger asChild>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                                  onClick={() => setDeleteTransactionId(transaction.id)}
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </Button>
+                              </AlertDialogTrigger>
+                              <AlertDialogContent>
+                                <AlertDialogHeader>
+                                  <AlertDialogTitle>Delete Transaction</AlertDialogTitle>
+                                  <AlertDialogDescription>
+                                    Are you sure you want to delete this transaction? This action cannot be undone.
+                                  </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                  <AlertDialogCancel onClick={() => setDeleteTransactionId(null)}>
+                                    Cancel
+                                  </AlertDialogCancel>
+                                  <AlertDialogAction
+                                    onClick={() => handleDeleteTransaction(transaction.id)}
+                                    className="bg-red-600 hover:bg-red-700"
+                                  >
+                                    Delete
+                                  </AlertDialogAction>
+                                </AlertDialogFooter>
+                              </AlertDialogContent>
+                            </AlertDialog>
                           </td>
                         </tr>
                       ))}
